@@ -107,11 +107,7 @@ articleView.create = () => {
 };
 
 
-articleView.initIndexPage = () => {
-  console.log('You\'re fired!!!');
-
-  Article.fetchAll();
-
+articleView.initIndexPage = () => {  
   Article.all.forEach(article => {
     $('#articles').append(article.toHtml())
   });

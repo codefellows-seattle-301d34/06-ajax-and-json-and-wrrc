@@ -1,7 +1,7 @@
 # Project Name
 
 **Author**: Paul Ritzman, Ashton K. Ellis
-**Version**: 1.1.0 (increment the patch/fix version number up if you make more commits past your first submission)
+**Version**: 2.0.0 (increment the patch/fix version number up if you make more commits past your first submission)
 
 ## Overview
 <!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for a Code Fellows 301 class. (i.e. What's your problem domain?) -->
@@ -16,6 +16,10 @@
 01-01-2001 4:59pm - Application now has a fully-functional express server, with GET and POST routes for the book resource.
 
 05-15-2018 10:01am - JSON data being fetched from hackerIpsum.json and Article instances being generated - still need to have Articles rendered to DOM
+
+05-15-2018 10:37am - Acticles are now successfully rendering to the page.
+
+05-15-2018 10:47am - Article data now saves to local storage, and will load from local storage if present.
 
 ## Credits and Collaborations
 
