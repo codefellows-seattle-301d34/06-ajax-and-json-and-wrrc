@@ -1,7 +1,7 @@
 # Ajax and jSon and WWRC
 
-**Author**: Your Name Goes Here
-**Version**: 1.0.0 (increment the patch/fix version number up if you make more commits past your first submission)
+**Author**: Timothy 'GB' Busch and Chris Hemenes
+**Version**: 1.6.0 (increment the patch/fix version number up if you make more commits past your first submission)
 
 ## Overview
 <!-- Provide a high level overview of what this application is and why you are building it, beyond the fact that it's an assignment for a Code Fellows 301 class. (i.e. What's your problem domain?) -->
@@ -16,7 +16,7 @@ Describe how a user would used this page. The user would fork the page from gith
 We are using Javascript with Jquery, Handlebars and Highlight. A "server' to store the data with Json.
 
 ## Change Log
-<!-- Use this are to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an examples:
+<!-- Use this are to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an examples: -->
 
 10:25 - Comments completed
 10:32 - Local Storage Functional
@@ -25,5 +25,3 @@ We are using Javascript with Jquery, Handlebars and Highlight. A "server' to sto
 01-01-2001 4:59pm - Application now has a fully-functional express server, with GET and POST routes for the book resource.
 
 ## Credits and Collaborations
-<!-- Give credit (and a link) to other people or resources that helped you build this application. -->
--->
