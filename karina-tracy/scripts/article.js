@@ -33,7 +33,7 @@ Article.prototype.toHtml = function() {
 // REVIEW: This function will take the rawData, how ever it is provided, and use it to instantiate all the articles. This code is moved from elsewhere, and encapsulated in a simply-named function for clarity.
 
 // COMMENT: Where is this function called? What does 'rawData' represent now? How is this different from previous labs?
-// .loadAll() is called in the .fetchAll() function. Before .fecthAll() function, rawData was an array of objects (our main data). In .fetchAll() function, rawData becomes a value of the local storage.
+// .loadAll() is called in the .fetchAll() function. Before .fecthAll() function, rawData was an array of objects (our main data). In .fetchAll() function, rawData becomes a value of the local storage. .fetchAll() is called from the end of index.html after the page loads.
 Article.loadAll = articleData => {
   articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)))
 
@@ -45,16 +45,17 @@ Article.fetchAll = () => {
   // REVIEW: What is this 'if' statement checking for? Where was the rawData set to local storage?
   //The if statement is checking is the local storage has data. rawData was set to local storage in the callback function passed to $.getJSON.
   if (localStorage.rawData) {
-
     Article.loadAll(JSON.parse(localStorage.rawData));
-
+    articleView.initIndexPage();
   } else {
-    $.getJSON('hackerIpsum.json')
+    $.getJSON('data/hackerIpsum.json')
       .then(data => {
-        console.log('from .then', data);
         localStorage.setItem('rawData', JSON.stringify(data));
         Article.loadAll(data)
-
+        articleView.initIndexPage();
+      })
+      .catch(err => {
+        console.error('Error on fetching data/hackerIpsum.json',err);
       })
   }
-}
+};
