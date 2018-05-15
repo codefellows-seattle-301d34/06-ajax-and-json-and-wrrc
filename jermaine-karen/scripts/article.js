@@ -32,8 +32,6 @@ Article.prototype.toHtml = function() {
 
 // REVIEW: This function will take the rawData, however it is provided, and use it to instantiate all the articles. This code is moved from elsewhere, and encapsulated in a simply-named function for clarity.
 
-// COMMENT: Where is this function called? What does 'rawData' represent now? How is this different from previous labs?
-// PUT YOUR RESPONSE HERE
 Article.loadAll = articleData => {
   articleData.sort( ( a, b ) => ( new Date( b.publishedOn ) ) - ( new Date( a.publishedOn ) ) );
 
@@ -41,6 +39,9 @@ Article.loadAll = articleData => {
 }
 
 // REVIEW: This function will retrieve the data from either a local or remote source, and process it, then hand off control to the View.
+
+// COMMENT: Where is this function called? What does 'rawData' represent now? How is this different from previous labs?
+// This function is called on index.html, and it is checking local storage for existing data, and if none exists, it is loading article from JSON. 
 Article.fetchAll = () => {
   // REVIEW: What is this 'if' statement checking for? Where was the rawData set to local storage?
   if ( localStorage.getItem( 'rawData' ) ) {
