@@ -13,7 +13,7 @@ function Article (rawDataObj) {
 Article.all = [];
 
 // COMMENT: Why isn't this method written as an arrow function?
-// PUT YOUR RESPONSE HERE
+// because it has 'this' in method
 Article.prototype.toHtml = function() {
   let template = Handlebars.compile($('#article-template').text());
 
@@ -21,7 +21,7 @@ Article.prototype.toHtml = function() {
 
   // COMMENT: What is going on in the line below? What do the question mark and colon represent? How have we seen this same logic represented previously?
   // Not sure? Check the docs!
-  // PUT YOUR RESPONSE HERE
+  // if it's true do.... else do...
   this.publishStatus = this.publishedOn ? `published ${this.daysAgo} days ago` : '(draft)';
   this.body = marked(this.body);
 
@@ -33,7 +33,7 @@ Article.prototype.toHtml = function() {
 // REVIEW: This function will take the rawData, how ever it is provided, and use it to instantiate all the articles. This code is moved from elsewhere, and encapsulated in a simply-named function for clarity.
 
 // COMMENT: Where is this function called? What does 'rawData' represent now? How is this different from previous labs?
-// PUT YOUR RESPONSE HERE
+// rawdate is data in local storage. this lab the rawdata is in local storage and we had to load it from there and not from js file
 Article.loadAll = articleData => {
   articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)))
 
@@ -46,15 +46,18 @@ Article.fetchAll = () => {
   if (localStorage.rawData) {
 
     Article.loadAll(JSON.parse(localStorage.rawData));
-    console.log('test')
+    articleView.initIndexPage()
+    
   } else {
     $.ajax({
       url: 'data/hackerIpsum.json',
       method: 'GET',
       success: function(rawDataJson){
-        console.log(rawDataJson)
+        
         localStorage.setItem('rawData', JSON.stringify(rawDataJson))
         Article.loadAll(rawDataJson);
+        articleView.initIndexPage()
+
       },
       fail: function(err){
         console.log(err)
@@ -63,4 +66,4 @@ Article.fetchAll = () => {
   }
 }
 
-// Article.fetchAll();
+
