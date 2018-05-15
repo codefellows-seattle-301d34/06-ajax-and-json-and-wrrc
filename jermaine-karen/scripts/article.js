@@ -43,47 +43,43 @@ Article.loadAll = articleData => {
 // REVIEW: This function will retrieve the data from either a local or remote source, and process it, then hand off control to the View.
 Article.fetchAll = () => {
   // REVIEW: What is this 'if' statement checking for? Where was the rawData set to local storage?
-<<<<<<< HEAD
   if (localStorage.getItem('rawData')) {
-
+    
     Article.loadAll(JSON.parse(localStorage.getItem('rawData')));
     articleView.initIndexPage();
+    
+    var eTag = localStorage.getItem('rawXhr');
+    
+    $.ajax({
+      url: '/data/hackerIpsum.json',
+      method: 'GET',
+      success: function (data, message, xhr) {
+        if ( xhr.getResponseHeader('eTag') !== eTag) {
+          Article.all = [];
+          Article.loadAll(data);
+          articleView.initIndexPage();
+          localStorage.setItem('rawData', JSON.stringify(data));
+          localStorage.setItem('rawXhr', xhr.getResponseHeader('eTag'));
+        }
+      }
+    })
 
   } else {
 
     $.ajax ({
       url: '/data/hackerIpsum.json',
       method: 'GET',
-      success: function (data, message) {
-        //console.log(data);
+      success: function (data, message, xhr) {
+        console.log(xhr.getResponseHeader('eTag'));
         Article.loadAll(data);
         articleView.initIndexPage();
         localStorage.setItem('rawData', JSON.stringify(data));
+        localStorage.setItem('rawXhr', JSON.stringify(xhr.getResponseHeader('eTag')));
       },
       fail: function (err) {
         console.error(err);
       }
     })
-=======
-  if ( localStorage.getItem( 'rawData' ) ) {
-    let parsedData = JSON.parse( localStorage.getItem( 'rawData' ) );
-    Article.loadAll( parsedData );
-    articleView.initIndexPage();
-
-  } else {
-    $.ajax( {
-      url: '/data/hackerIpsum.json',
-      method: 'GET',
-      success: function( data, message ) {
-        Article.loadAll( data );
-        articleView.initIndexPage();
-        localStorage.setItem( 'rawData', JSON.stringify( data ) );
-      },
-      fail: function( err ) {
-        console.error( err );
-      }
-    } )
->>>>>>> 83e069ec1679410c15c255e626aaeae94338a1fa
   }
 }
 
