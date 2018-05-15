@@ -48,6 +48,7 @@ Article.fetchAll = () => {
     Article.loadAll(JSON.parse(localStorage.rawData));
 
   } else {
+    // Kept for reference on how to use AJAX for the same code below.
     // $.ajax({
     //   url:'/data/hackerIpsum.json',
     //   method:'GET',
@@ -65,6 +66,6 @@ Article.fetchAll = () => {
       localStorage.setItem('rawData', JSON.stringify(articleJson));
       Article.loadAll(articleJson);
     });
-    // Fetch rawData from server using AJAX and store it in localstroage
+    // We knew we needed to get the data from the hackerIpsom first and we consoled that to make sure it was working. Next, we needed to put the information into localStorage so it would be available for the next time the page loaded.  This needed to be stringified to put it in proper format. After all of that, we needed to call the Article.loadAll function to load the articles into the Article function.  
   }
 }
