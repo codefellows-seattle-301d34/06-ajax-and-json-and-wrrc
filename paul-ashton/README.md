@@ -21,8 +21,6 @@ This application is a blog, which publishes articles from local storage, and use
 * IcoMoon icons
 
 ## Change Log
-01-01-2001 4:59pm - Application now has a fully-functional express server, with GET and POST routes for the book resource.
-
 05-15-2018 10:01am - JSON data being fetched from hackerIpsum.json and Article instances being generated - still need to have Articles rendered to DOM
 
 05-15-2018 10:37am - Acticles are now successfully rendering to the page.
