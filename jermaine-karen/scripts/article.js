@@ -43,11 +43,23 @@ Article.loadAll = articleData => {
 // REVIEW: This function will retrieve the data from either a local or remote source, and process it, then hand off control to the View.
 Article.fetchAll = () => {
   // REVIEW: What is this 'if' statement checking for? Where was the rawData set to local storage?
-  if ( localStorage.rawData ) {
-
-    Article.loadAll();
+  if ( localStorage.getItem( 'rawData' ) ) {
+    let parsedData = JSON.parse( localStorage.getItem( 'rawData' ) );
+    Article.loadAll( parsedData );
+    articleView.initIndexPage();
 
   } else {
-
+    $.ajax( {
+      url: '/data/hackerIpsum.json',
+      method: 'GET',
+      success: function( data, message ) {
+        Article.loadAll( data );
+        articleView.initIndexPage();
+        localStorage.setItem( 'rawData', JSON.stringify( data ) );
+      },
+      fail: function( err ) {
+        console.error( err );
+      }
+    } )
   }
 }
