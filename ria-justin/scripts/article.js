@@ -46,33 +46,14 @@ Article.loadAll = articleData => {
 Article.fetchAll = () => {
   // REVIEW: What is this 'if' statement checking for? Where was the rawData set to local storage?
   if (localStorage.rawdata) {
-    console.log('Local storage exists');
     Article.loadAll(JSON.parse(localStorage.rawdata));
     articleView.initIndexPage();
   } else {
-    console.log('No local storage!');
     $.getJSON('/data/hackerIpsum.json', function(blogArticles){
-      console.log(blogArticles);
       Article.loadAll(blogArticles);
       articleView.initIndexPage();
       localStorage.rawdata =JSON.stringify(blogArticles);
-      // localStorage.setItem(JSON.stringify(blogArticles));
     });
-
-    //2nd argument for $.getJSON is apparently a callback
-
-    // function(potato){
-    //   console.log(potato);
-    //   Article.loadAll(potato);
-    //   articleView.initIndexPage();
-    // }
-
-    // .then(Article.loadAll('local-data');
-    // localStorage.rawdata =JSON.stringify('local-data');
-    // articleView.initIndexPage())
-
-
-
   }
 
 };
