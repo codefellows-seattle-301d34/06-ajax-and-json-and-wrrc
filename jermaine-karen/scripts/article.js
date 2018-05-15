@@ -44,7 +44,6 @@ Article.loadAll = articleData => {
 // This function is called on index.html, and it is checking local storage for existing data, and if none exists, it is loading article from JSON. 
 Article.fetchAll = () => {
   // REVIEW: What is this 'if' statement checking for? Where was the rawData set to local storage?
-<<<<<<< HEAD
   if (localStorage.getItem('rawData')) {
 
     Article.loadAll(JSON.parse(localStorage.getItem('rawData')));
@@ -65,26 +64,6 @@ Article.fetchAll = () => {
         console.error(err);
       }
     })
-=======
-  if ( localStorage.getItem( 'rawData' ) ) {
-    let parsedData = JSON.parse( localStorage.getItem( 'rawData' ) );
-    Article.loadAll( parsedData );
-    articleView.initIndexPage();
-
-  } else {
-    $.ajax( {
-      url: '/data/hackerIpsum.json',
-      method: 'GET',
-      success: function( data, message ) {
-        Article.loadAll( data );
-        articleView.initIndexPage();
-        localStorage.setItem( 'rawData', JSON.stringify( data ) );
-      },
-      fail: function( err ) {
-        console.error( err );
-      }
-    } )
->>>>>>> 83e069ec1679410c15c255e626aaeae94338a1fa
   }
 }
 
