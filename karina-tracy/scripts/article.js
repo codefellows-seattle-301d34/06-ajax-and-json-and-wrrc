@@ -33,7 +33,7 @@ Article.prototype.toHtml = function() {
 // REVIEW: This function will take the rawData, how ever it is provided, and use it to instantiate all the articles. This code is moved from elsewhere, and encapsulated in a simply-named function for clarity.
 
 // COMMENT: Where is this function called? What does 'rawData' represent now? How is this different from previous labs?
-// .loadAll() is called in the .fetchAll() function. Before .fecthAll() function, rawData was an array of objects (our main data). In .fetchAll() function, rawData becomes a value of the local storage.
+// .loadAll() is called in the .fetchAll() function. Before .fetchAll() function, rawData was an array of objects (our main data). In .fetchAll() function, rawData becomes a value of the local storage. .fetchAll() is called from .getEtag which is called from index.html after the page loads.
 Article.loadAll = articleData => {
   articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)))
 
@@ -44,17 +44,53 @@ Article.loadAll = articleData => {
 Article.fetchAll = () => {
   // REVIEW: What is this 'if' statement checking for? Where was the rawData set to local storage?
   //The if statement is checking is the local storage has data. rawData was set to local storage in the callback function passed to $.getJSON.
+
   if (localStorage.rawData) {
-
+    // If localStorage.rawData exists then use the cashed data
     Article.loadAll(JSON.parse(localStorage.rawData));
-
+    articleView.initIndexPage();
   } else {
-    $.getJSON('hackerIpsum.json')
+    // Otherwise, kick off two asych functions:
+    //    $.getJSON to get new data from the data source
+    $.getJSON('data/hackerIpsum.json')
       .then(data => {
-        console.log('from .then', data);
         localStorage.setItem('rawData', JSON.stringify(data));
         Article.loadAll(data)
-
+        articleView.initIndexPage();
       })
+      .catch(err => {
+        console.error('Error on fetching data/hackerIpsum.json',err);
+      });
+    //   and $.ajax to get and save the new eTag value
+    $.ajax({
+      url: 'data/hackerIpsum.json',
+      method: 'HEAD',
+      success: function (data, status, XHR) {
+        let eTag = XHR.getResponseHeader('eTag');
+        localStorage.setItem('eTag',eTag);
+      },
+      fail: function (err) {
+        console.error('fetchAll getEtag',err);
+      }
+    })
   }
+};
+
+// Called from index.html.
+// Asynch function to retrieve eTag from data source and compiar with the cashed eTag value.
+Article.getEtag = () => {
+  $.ajax({
+    url: 'data/hackerIpsum.json',
+    method: 'HEAD',
+    success: function (data, status, XHR) {
+      let eTag = XHR.getResponseHeader('eTag');
+      if (localStorage.eTag && localStorage.eTag !== eTag) {
+        localStorage.removeItem('rawData'); // clear cache, force reload from data source
+      }
+      Article.fetchAll();
+    },
+    fail: function (err) {
+      console.error('getEtag',err);
+    }
+  })
 }
