@@ -49,7 +49,7 @@ Article.fetchAll = () => {
     Article.loadAll(JSON.parse(localStorage.getItem('rawData')));
     articleView.initIndexPage();
 
-
+  // If local storage exist load local data an init the page, if it doesnt exist load jquery ajax to draw data with get method. on sucess of that draw stringify and set info under raw data, load articles and draw data. Initialized rae data on index page. If it is not a successful get and error will occur.
   } else {
     $.ajax({
       url: 'data/hackerIpsum.json',
