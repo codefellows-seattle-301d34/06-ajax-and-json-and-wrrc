@@ -45,7 +45,10 @@ Article.fetchAll = () => {
   // REVIEW: What is this 'if' statement checking for? Where was the rawData set to local storage?
   if (localStorage.rawData) {
 
-    Article.loadAll(localStorage.JSON.parse(rawData));
+    // Article.loadAll(localStorage.getItem('rawData', JSON.parse(rawData)));
+    Article.loadAll(JSON.parse(localStorage.getItem('rawData')));
+    articleView.initIndexPage();
+
 
   } else {
     $.ajax({
