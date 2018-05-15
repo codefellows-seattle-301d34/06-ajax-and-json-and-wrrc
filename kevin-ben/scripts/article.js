@@ -13,7 +13,7 @@ function Article(rawDataObj) {
 Article.all = [];
 
 // COMMENT: Why isn't this method written as an arrow function?
-// PUT YOUR RESPONSE HERE
+// Because this function uses contextual this. If this were an arrow function, this would refer to the window instead of the Article object.
 Article.prototype.toHtml = function () {
   let template = Handlebars.compile($('#article-template').text());
 
@@ -21,8 +21,9 @@ Article.prototype.toHtml = function () {
 
   // COMMENT: What is going on in the line below? What do the question mark and colon represent? How have we seen this same logic represented previously?
   // Not sure? Check the docs!
-  // PUT YOUR RESPONSE HERE
+  // This is a ternary operator, which is a shorthand version of an if else statement. The condition being tested is placed before the ?, and if the condition evaluates as true, the code placed after the ? runs. Otherwise the code placed after the : is run.
   this.publishStatus = this.publishedOn ? `published ${this.daysAgo} days ago` : '(draft)';
+
   this.body = marked(this.body);
 
   return template(this);
@@ -33,7 +34,7 @@ Article.prototype.toHtml = function () {
 // REVIEW: This function will take the rawData, how ever it is provided, and use it to instantiate all the articles. This code is moved from elsewhere, and encapsulated in a simply-named function for clarity.
 
 // COMMENT: Where is this function called? What does 'rawData' represent now? How is this different from previous labs?
-// PUT YOUR RESPONSE HERE
+// This function is called in Article.fetchAll. This code used to be on the bottom of article.js, but now that the articleData is coming from two potential sources (local storage or hackerIpsum.json), this code has been moved to its own function so that it does not have to be repeated.
 Article.loadAll = articleData => {
   articleData.sort((a, b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)))
 
