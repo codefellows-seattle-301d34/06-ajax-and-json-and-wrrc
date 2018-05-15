@@ -13,15 +13,14 @@ function Article (rawDataObj) {
 Article.all = [];
 
 // COMMENT: Why isn't this method written as an arrow function?
-// PUT YOUR RESPONSE HERE
+// If we use an arrow function contexual this would refer to parent of Article ,instead of Article.
 Article.prototype.toHtml = function() {
   let template = Handlebars.compile($('#article-template').text());
 
   this.daysAgo = parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000);
 
   // COMMENT: What is going on in the line below? What do the question mark and colon represent? How have we seen this same logic represented previously?
-  // Not sure? Check the docs!
-  // PUT YOUR RESPONSE HERE
+  // The line is setting published status equal to output of a ternary operator.The ternary operator looks at published on. If publishedOn evaluates to true, number of days ago its published will display. If it evaluates to false, it will display "draft"
   this.publishStatus = this.publishedOn ? `published ${this.daysAgo} days ago` : '(draft)';
   this.body = marked(this.body);
 
@@ -45,9 +44,18 @@ Article.fetchAll = () => {
   // REVIEW: What is this 'if' statement checking for? Where was the rawData set to local storage?
   if (localStorage.rawData) {
 
-    Article.loadAll();
-
+    Article.loadAll(JSON.parse(localStorage.rawdata));
+    articleView.initIndexPage();
   } else {
+    $.getJSON('/data/hackerIpsum.js')
+    .then('local-data'){
+      Article.loadAll('local-data');
+      localStorage.rawdata =JSON.stringify('local-data');
+      articleView.initIndexPage();
+    }
+  
+
+    }
 
   }
 }
