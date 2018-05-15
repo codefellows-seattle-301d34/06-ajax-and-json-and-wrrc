@@ -46,6 +46,8 @@ Article.fetchAll = () => {
   if (localStorage.rawData) {
 
     Article.loadAll(JSON.parse(localStorage.rawData));
+    // we can call our init here, this will help render the page after the files are loaded
+    articleView.initIndexPage();
 
   } else {
     // Kept for reference on how to use AJAX for the same code below.
@@ -55,17 +57,24 @@ Article.fetchAll = () => {
     //   success: function(data, message) {
     //     console.log(data);
     //     console.log(message);
+    //     articleView.initIndexPage();
     //   },
     //   fail: function(err){
     //     console.error(err);
     //   }
     // })
 
-    $.getJSON('/data/hackerIpsum.json', function(articleJson) {
-      console.log(articleJson);
-      localStorage.setItem('rawData', JSON.stringify(articleJson));
-      Article.loadAll(articleJson);
-    });
+
+    // how allie wrote her code
+    $.getJSON('/data/hackerIpsum.json')
+      .then((data) => {
+        Article.loadAll(data);
+        localStorage.rawData = JSON.stringify(data);
+        articleView.initIndexPage();
+      },(err) => {
+        console.log(err);
+      });
+
     // We knew we needed to get the data from the hackerIpsom first and we consoled that to make sure it was working. Next, we needed to put the information into localStorage so it would be available for the next time the page loaded.  This needed to be stringified to put it in proper format. After all of that, we needed to call the Article.loadAll function to load the articles into the Article function.  
   }
 }
