@@ -108,10 +108,16 @@ articleView.create = () => {
 
 
 articleView.initIndexPage = () => {
+<<<<<<< HEAD
+  Article.all.forEach(article => {
+    $('#articles').append(article.toHtml())
+  });
+=======
   Article.all.forEach( article => {
     $( '#articles' ).append( article.toHtml() )
   } );
 
+>>>>>>> 83e069ec1679410c15c255e626aaeae94338a1fa
   articleView.populateFilters();
   articleView.handleCategoryFilter();
   articleView.handleAuthorFilter();
