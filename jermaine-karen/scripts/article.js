@@ -1,6 +1,6 @@
 'use strict';
 
-function Article (rawDataObj) {
+function Article( rawDataObj ) {
   this.author = rawDataObj.author;
   this.authorUrl = rawDataObj.authorUrl;
   this.title = rawDataObj.title;
@@ -13,36 +13,37 @@ function Article (rawDataObj) {
 Article.all = [];
 
 // COMMENT: Why isn't this method written as an arrow function?
-// PUT YOUR RESPONSE HERE
+// The method is attached to the prototype, using contextual 'this'. An arrow function might cause unexpected scope issues.
 Article.prototype.toHtml = function() {
-  let template = Handlebars.compile($('#article-template').text());
+  let template = Handlebars.compile( $( '#article-template' ).text() );
 
-  this.daysAgo = parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000);
+  this.daysAgo = parseInt( ( new Date() - new Date( this.publishedOn ) ) / 60 / 60 / 24 / 1000 );
 
   // COMMENT: What is going on in the line below? What do the question mark and colon represent? How have we seen this same logic represented previously?
   // Not sure? Check the docs!
-  // PUT YOUR RESPONSE HERE
+  // This is a ternary operator, which is an if/else statement for Boolean operations. The question mark represents the true/false evaluation; either side of the colon represents the code block for true/false respectively.
   this.publishStatus = this.publishedOn ? `published ${this.daysAgo} days ago` : '(draft)';
-  this.body = marked(this.body);
+  this.body = marked( this.body );
 
-  return template(this);
+  return template( this );
 };
 
 // REVIEW: There are some other functions that also relate to all articles across the board, rather than just single instances. Object-oriented programming would call these "class-level" functions, that are relevant to the entire "class" of objects that are Articles.
 
-// REVIEW: This function will take the rawData, how ever it is provided, and use it to instantiate all the articles. This code is moved from elsewhere, and encapsulated in a simply-named function for clarity.
+// REVIEW: This function will take the rawData, however it is provided, and use it to instantiate all the articles. This code is moved from elsewhere, and encapsulated in a simply-named function for clarity.
 
 // COMMENT: Where is this function called? What does 'rawData' represent now? How is this different from previous labs?
 // PUT YOUR RESPONSE HERE
 Article.loadAll = articleData => {
-  articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)))
+  articleData.sort( ( a, b ) => ( new Date( b.publishedOn ) ) - ( new Date( a.publishedOn ) ) );
 
-  articleData.forEach(articleObject => Article.all.push(new Article(articleObject)))
+  articleData.forEach( articleObject => Article.all.push( new Article( articleObject ) ) );
 }
 
 // REVIEW: This function will retrieve the data from either a local or remote source, and process it, then hand off control to the View.
 Article.fetchAll = () => {
   // REVIEW: What is this 'if' statement checking for? Where was the rawData set to local storage?
+<<<<<<< HEAD
   if (localStorage.getItem('rawData')) {
 
     Article.loadAll(JSON.parse(localStorage.getItem('rawData')));
@@ -63,6 +64,26 @@ Article.fetchAll = () => {
         console.error(err);
       }
     })
+=======
+  if ( localStorage.getItem( 'rawData' ) ) {
+    let parsedData = JSON.parse( localStorage.getItem( 'rawData' ) );
+    Article.loadAll( parsedData );
+    articleView.initIndexPage();
+
+  } else {
+    $.ajax( {
+      url: '/data/hackerIpsum.json',
+      method: 'GET',
+      success: function( data, message ) {
+        Article.loadAll( data );
+        articleView.initIndexPage();
+        localStorage.setItem( 'rawData', JSON.stringify( data ) );
+      },
+      fail: function( err ) {
+        console.error( err );
+      }
+    } )
+>>>>>>> 83e069ec1679410c15c255e626aaeae94338a1fa
   }
 }
 
