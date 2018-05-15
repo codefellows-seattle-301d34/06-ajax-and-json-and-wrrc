@@ -34,6 +34,7 @@ Article.prototype.toHtml = function() {
 
 // COMMENT: Where is this function called? What does 'rawData' represent now? How is this different from previous labs?
 // PUT YOUR RESPONSE HERE
+// This function is called inside of the Article.fetchAll() method. When Article.loadAll() is called, rawData represents the article data that has been imported from localStorage. In previous labs, rawData was an array of object literal from a linked .js file.
 Article.loadAll = articleData => {
   articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)))
 
@@ -47,12 +48,10 @@ Article.fetchAll = () => {
   if (localStorage.rawData) { // if it exists
     Article.loadAll(JSON.parse(localStorage.rawData));
     articleView.initIndexPage();
-    console.log('data incoming from local storage');
   } else {
     $.getJSON('/../data/hackerIpsum.json', articleData => {
       Article.loadAll(articleData);
       articleView.initIndexPage();
-      console.log('data incoming from AJAX');
       localStorage.setItem('rawData', JSON.stringify(articleData));
     });
   }
