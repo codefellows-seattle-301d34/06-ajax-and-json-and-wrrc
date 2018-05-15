@@ -7,7 +7,6 @@ function Article (rawDataObj) {
   this.category = rawDataObj.category;
   this.body = rawDataObj.body;
   this.publishedOn = rawDataObj.publishedOn;
-  Article.all.push(this);
 }
 
 // REVIEW: Instead of a global `articles = []` array, let's attach this list of all articles directly to the constructor function. Note: it is NOT on the prototype. In JavaScript, functions are themselves objects, which means we can add properties/values to them at any time. In this case, the array relates to ALL of the Article objects, so it does not belong on the prototype, as that would only be relevant to a single instantiated Article.
@@ -16,8 +15,6 @@ Article.all = [];
 // COMMENT: Why isn't this method written as an arrow function?
 // Because we would lose the ability to use contextual "this", which we need to use as this is a prototype function, // and each instance of the Article object has it's own .toHtml method.
 Article.prototype.toHtml = function() {
-  console.log('.toHtml called');
-
   let template = Handlebars.compile($('#article-template').text());
 
   this.daysAgo = parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000);
@@ -38,9 +35,6 @@ Article.prototype.toHtml = function() {
 // COMMENT: Where is this function called? What does 'rawData' represent now? How is this different from previous labs?
 // PUT YOUR RESPONSE HERE
 Article.loadAll = articleData => {
-  console.log('loadAll called');
-
-
   articleData.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)))
 
   articleData.forEach(articleObject => Article.all.push(new Article(articleObject)))
@@ -49,13 +43,13 @@ Article.loadAll = articleData => {
 // REVIEW: This function will retrieve the data from either a local or remote source, and process it, then hand off control to the View.
 Article.fetchAll = () => {
   // REVIEW: What is this 'if' statement checking for? Where was the rawData set to local storage?
-  console.log('fetchAll called');
 
   if (localStorage.rawData) {
     Article.loadAll();
   } else {
     $.getJSON('/../data/hackerIpsum.json', articleData => {
       Article.loadAll(articleData);
+      articleView.initIndexPage();
     });
   }
 }
